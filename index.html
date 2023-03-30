@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai chat app</title>
+</head>
+<body>
+    <main>
+        <form action="" method="post">
+            <input type="text" name="message" id="message" value="">
+            <button type="submit">Send</button>
+            <div id="chat-log">
+        
+            </div>
+        </form>
+    </main>
+    <script>
+        let messages=[];
+        const chatLog=document.getElementById("chat-log");
+        const message=document.getElementById("message");
+        const form=document.querySelector('form');
+        form.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            const messageText=message.value;
+            const newMessage={ "role":"user","content":messageText };
+            messages.push(newMessage);
+            message.value="";
+            const messageElement=document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add('message--sent');
+            messageElement.innerHTML=`
+            <div class="message--sent">${messageText}</div>
+            `;
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop=chatLog.scrollHeight;
+
+            fetch("http://localhost:8080/",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    messages
+                })
+            }).then((res)=>res.json()).then((data)=>{
+                let newAssitantMessage={"role":"assistant","content":data.completion.content};
+                messages.push(newAssitantMessage);
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add('message--sent');
+                messageElement.innerHTML = `
+            <div class="message--sent">${data.completion.content}</div>
+            `;
+                chatLog.appendChild(messageElement);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            })
+        })
+    </script>
+
+</body>
+</html>
