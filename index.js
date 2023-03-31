@@ -19,8 +19,11 @@ const configuration=new Configuration({
 
 const openai= new OpenAIApi(configuration);
 
+app.get("/",(req,res)=>{
+    res.send("Hello")
+})
 
-app.post("/", async(req, res) => {
+app.post("/api/v1", async(req, res) => {
     const { messages }= req.body;
     console.log(messages)
     const completion = await openai.createChatCompletion({

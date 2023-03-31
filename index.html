@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Ai chat app</title>
 </head>
 <body>
     <main>
         <form action="" method="post">
-            <input type="text" name="message" id="message" value="">
+            <input type="text" name="message" id="message" value="" placeholder="Type a message">
             <button type="submit">Send</button>
-            <div id="chat-log">
-        
-            </div>
         </form>
+        <div id="chat-log" >
+    
+        </div>
     </main>
     <script>
         let messages=[];
@@ -29,14 +30,14 @@
             message.value="";
             const messageElement=document.createElement('div');
             messageElement.classList.add('message');
-            messageElement.classList.add('message--sent');
+            // messageElement.classList.add('message--sent');
             messageElement.innerHTML=`
-            <div class="message--sent">${messageText}</div>
+            <div class="message">${messageText}</div>
             `;
             chatLog.appendChild(messageElement);
             chatLog.scrollTop=chatLog.scrollHeight;
 
-            fetch("http://localhost:8080/",{
+            fetch("http://localhost:8080/api/v1",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -48,14 +49,14 @@
                 let newAssitantMessage={"role":"assistant","content":data.completion.content};
                 messages.push(newAssitantMessage);
                 const messageElement = document.createElement('div');
-                messageElement.classList.add('message');
+                // messageElement.classList.add('message');
                 messageElement.classList.add('message--sent');
                 messageElement.innerHTML = `
             <div class="message--sent">${data.completion.content}</div>
             `;
                 chatLog.appendChild(messageElement);
                 chatLog.scrollTop = chatLog.scrollHeight;
-            })
+            }).catch((error)=>alert(error));
         })
     </script>
 
