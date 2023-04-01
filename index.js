@@ -30,7 +30,7 @@ app.post("/api/v1", async(req, res) => {
         model: "gpt-3.5-turbo",
         messages: [
             // { role: "user", content: message }
-            {role:"system",content:"You are a CodeHustel helpfull and assistant coding chatbot"},
+            {role:"system",content:"You are a helpfull and assistant coding chatbot. Your name is Codey and builed by Pillu🐻."},
             ...messages
         ]
     });
@@ -41,4 +41,4 @@ app.post("/api/v1", async(req, res) => {
     })
 });
 
-app.listen(port,()=>console.log("listening"))
+app.listen(port,()=>console.log("listening",port))
